@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">News App</string>
+
+    <!-- Tool Strings -->
+    <string name="title_tool">Destiny 2 Reveal!</string>
+    <string name="publisher_tool">IGN</string>
+    <string name="date_tool">Mar 30, 2017</string>
+</resources>
