@@ -5,4 +5,5 @@
     <string name="title_tool">Destiny 2 Reveal!</string>
     <string name="publisher_tool">IGN</string>
     <string name="date_tool">Mar 30, 2017</string>
+    <string name="search">Search by topic or publisher</string>
 </resources>

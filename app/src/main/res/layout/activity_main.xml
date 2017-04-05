@@ -8,17 +8,20 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="@dimen/image_height"
         android:layout_weight="1">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:id="@+id/article_image"
+            android:src="@drawable/destiny_two"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="@dimen/image_height"
         android:layout_weight="2"
         android:orientation="vertical">
 
@@ -26,21 +29,21 @@
             android:id="@+id/title"
             style="@style/article_item_style"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            tools:text="Destiny 2 Reveal!" />
+            android:layout_height="@dimen/article_info_height"
+            tools:text="@string/title_tool" />
 
         <TextView
             android:id="@+id/publisher"
             style="@style/article_item_style"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/article_info_height"
             tools:text="@string/publisher_tool" />
 
         <TextView
             android:id="@+id/publish_date"
             style="@style/article_item_style"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/article_info_height"
             tools:text="@string/date_tool"/>
 
     </LinearLayout>
