@@ -32,26 +32,28 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         // If no view can be recycled, inflate a new one.
         if (convertView == null) {
 
+
+            // Gets the item's position in the list
+            Article thisArticle = getItem(position);
+
+            // Assign the views to be used in the layout
+            ImageView articleImageView = (ImageView) convertView.findViewById(R.id.article_image);
+            TextView publisherView = (TextView) convertView.findViewById(R.id.publisher);
+            TextView dateView = (TextView) convertView.findViewById(R.id.publish_date);
+            TextView titleView = (TextView) convertView.findViewById(R.id.title);
+
+            // Format the date for display
+            Date dateObject = new Date(thisArticle.getDate());
+            String formattedDate = formatDate(dateObject);
+
+
+            // Call the class getter methods to set the relevant information on each view
+            articleImageView.setImageResource(thisArticle.getImage());
+            publisherView.setText(thisArticle.getPublisher());
+            dateView.setText(formattedDate);
+            titleView.setText(thisArticle.getTitle());
+
         }
-        // Gets the item's position in the list
-        Article thisArticle = getItem(position);
-
-        // Assign the views to be used in the layout
-        ImageView articleImageView = (ImageView) convertView.findViewById(R.id.article_image);
-        TextView publisherView = (TextView) convertView.findViewById(R.id.publisher);
-        TextView dateView = (TextView) convertView.findViewById(R.id.publish_date);
-        TextView titleView = (TextView) convertView.findViewById(R.id.title);
-
-        // Format the date for display
-        Date dateObject = new Date(thisArticle.getDate());
-        String formattedDate = formatDate(dateObject);
-
-
-        // Call the class getter methods to set the relevant information on each view
-        articleImageView.setImageResource(thisArticle.getImage());
-        publisherView.setText(thisArticle.getPublisher());
-        dateView.setText(formattedDate);
-
         return convertView;
     }
 

@@ -9,4 +9,5 @@ import java.util.List;
  */
 
 public class ArticleLoader extends AsyncTaskLoader<List<Article>> {
+
 }
