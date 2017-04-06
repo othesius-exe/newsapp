@@ -5,7 +5,7 @@ import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 
 /**
- * Created by Othesius on 4/5/17.
+ *
  */
 
 public class Settings extends AppCompatActivity {
@@ -18,5 +18,10 @@ public class Settings extends AppCompatActivity {
 
     public static class ArticlePreferenceFragment extends PreferenceFragment {
 
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.settings_main);
+        }
     }
 }

@@ -6,6 +6,7 @@
     <string name="publisher_tool">IGN</string>
     <string name="date_tool">Mar 30, 2017</string>
     <string name="search">Search by topic or publisher</string>
+    <string name="submit">Submit</string>
 
     <!-- Error Strings -->
     <string name="no_connection">No Internet Connection</string>
@@ -14,4 +15,7 @@
     <!-- Settings Menu Strings [CHAR LIMIT = NONE] -->
     <string name="settings_menu_item">Settings</string>
     <string name="settings_title">News Settings</string>
+
+    <string name="category">Categories</string>
+    <string name="category_default">""</string>
 </resources>
