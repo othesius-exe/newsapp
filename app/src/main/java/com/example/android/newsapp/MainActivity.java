@@ -1,6 +1,9 @@
 package com.example.android.newsapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -50,16 +53,17 @@ public class MainActivity extends AppCompatActivity
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         mProgressBar.setVisibility(View.GONE);
 
-        // Convert user input to string
-        // Replace spaces with "+"
-        EditText editText = (EditText) findViewById(R.id.search_bar);
-        mUserQuery = editText.getText().toString();
-        mSearchFilter = mUserQuery.replace(" ", "+");
+        final EditText editText = (EditText) findViewById(R.id.search_bar);
 
         // Set the adapter to the listview
         ListView articleList = (ListView) findViewById(R.id.article_list);
         mArticleAdapter = new ArticleAdapter(this, new ArrayList<Article>());
         articleList.setAdapter(mArticleAdapter);
+
+        // Set an empty view on the list on startup
+        mEmptyView = (TextView) findViewById(R.id.empty_view);
+        mEmptyView.setText(R.string.search);
+        articleList.setEmptyView(mEmptyView);
 
         // Instantiate the loader
         mLoaderManager = getSupportLoaderManager();
@@ -73,6 +77,22 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
 
                 // Check for an internet connection
+                ConnectivityManager connectivityManager =
+                        (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+                boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+                if (!isConnected) {
+                    mEmptyView.setText(R.string.no_connection);
+                }
+
+                // Convert user input to string
+                // Replace spaces with "+"
+                mUserQuery = editText.getText().toString();
+                mSearchFilter = mUserQuery.replace(" ", "+");
+
+                // Restart the loader on click
+                mLoaderManager.restartLoader(ARTICLE_LOADER_ID, null, MainActivity.this);
             }
         });
     }
