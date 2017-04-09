@@ -24,9 +24,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Article>> {
 
-    private String NEWS_QUERY_URL = "http://content.guardianapis.com/search";
+    private String NEWS_QUERY_URL = "http://content.guardianapis.com/search?";
 
-    private String NEWS_API_KEY = "1808a9c1-1b7b-4fd7-b096-d46102ab8e91";
+    private String NEWS_API_KEY = "&api-key=1808a9c1-1b7b-4fd7-b096-d46102ab8e91";
 
     public static final String LOG_TAG = MainActivity.class.getName();
 
@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity
 
     // Users Search Query
     private String mUserQuery;
+
+    // Full Url to use
+    public String mFullUrl;
 
     public static final int ARTICLE_LOADER_ID = 1;
 
@@ -56,6 +59,9 @@ public class MainActivity extends AppCompatActivity
         // Find and hide the progress bar
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         mProgressBar.setVisibility(View.GONE);
+
+        // Set the Full url to to be a generic query so information loads on opening the application
+        mFullUrl = NEWS_QUERY_URL + NEWS_API_KEY;
 
         // Set the adapter to the ListView
         ListView articleListView = (ListView) findViewById(R.id.article_list);
@@ -90,13 +96,16 @@ public class MainActivity extends AppCompatActivity
 
                 // Convert user input to string
                 // Replace spaces with "+"
+                // Create a new url to query the api
                 mUserQuery = editText.getText().toString();
-                mSearchFilter = mUserQuery.replace(" ", "");
+                mSearchFilter = mUserQuery.replace(" ", "%20").replace("and", "AND").replace("or", "OR").replace("not", "NOT");
+                mFullUrl = NEWS_QUERY_URL + mUserQuery + NEWS_API_KEY;
 
                 // Restart the loader on click
                 mLoaderManager.restartLoader(ARTICLE_LOADER_ID, null, MainActivity.this);
             }
         });
+        Log.e(LOG_TAG, "Url being sent " + mFullUrl);
     }
 
     // Inflate the view for the option menu
@@ -124,7 +133,7 @@ public class MainActivity extends AppCompatActivity
     public Loader<List<Article>> onCreateLoader(int i, Bundle bundle) {
         Log.i(LOG_TAG, "Creating loader");
         mProgressBar.setVisibility(View.VISIBLE);
-        return new ArticleLoader(this, NEWS_QUERY_URL + mSearchFilter + NEWS_API_KEY);
+        return new ArticleLoader(this, mFullUrl);
     }
 
     // When the load completes, set the data in the adapter

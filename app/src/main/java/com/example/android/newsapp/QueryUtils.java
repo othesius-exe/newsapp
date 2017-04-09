@@ -91,7 +91,7 @@ public class QueryUtils {
                 Log.e(LOG_TAG, "Error Response Code" + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem retrieving json object");
+            Log.e(LOG_TAG, "Problem retrieving json object " + url);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
