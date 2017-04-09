@@ -10,27 +10,27 @@ import android.os.Parcelable;
 public class Article implements Parcelable {
 
     // Class Variables
-    private int mImage;
+    private String mImageUrl;
 
     private String mTitle;
 
     private String mPublisher;
 
-    private long mDate;
+    private String mDate;
 
     // Class constructor
-    private void Article(int image, String title, String publisher, long date) {
-        mImage = image;
+    public Article(String imageUrl, String title, String publisher, String date) {
+        mImageUrl = imageUrl;
         mTitle = title;
         mPublisher = publisher;
         mDate = date;
     }
 
     // Class getter methods for individual attributes
-
-    public int getImage() {
-        return mImage;
+    public String getImageUrl() {
+        return mImageUrl;
     }
+
     public String getTitle() {
         return mTitle;
     }
@@ -39,7 +39,7 @@ public class Article implements Parcelable {
         return mPublisher;
     }
 
-    public long getDate() {
+    public String getDate() {
         return mDate;
     }
 
@@ -51,12 +51,11 @@ public class Article implements Parcelable {
                 "For: " + mPublisher;
     }
 
-    //TODO Implement Parcelable
-    public Article(Parcel in) {
+    protected Article(Parcel in) {
+        mImageUrl = in.readString();
+        mTitle = in.readString();
         mPublisher = in.readString();
-        mDate = in.readLong();
-        mPublisher = in.readString();
-        mImage = in.readInt();
+        mDate = in.readString();
     }
 
     @Override
@@ -66,10 +65,10 @@ public class Article implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mPublisher);
+        dest.writeString(mImageUrl);
         dest.writeString(mTitle);
-        dest.writeLong(mDate);
-        dest.writeInt(mImage);
+        dest.writeString(mPublisher);
+        dest.writeString(mDate);
     }
 
     @SuppressWarnings("unused")

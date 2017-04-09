@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -28,7 +29,7 @@ public class QueryUtils {
     /**
      * Query the News API
      */
-    public static List<Article> fetchBookData(String requestUrl) {
+    public static List<Article> fetchArticleData(String requestUrl) {
         // Create a url object
         URL url = createUrl(requestUrl);
 
@@ -103,7 +104,7 @@ public class QueryUtils {
     }
 
     /**
-     * Convert the {@Link InputStream} into a string
+     * Convert the InputStream into a string
      * containing the entire json Response
      */
     private static String readFromStream(InputStream inputStream) throws IOException {
@@ -153,22 +154,38 @@ public class QueryUtils {
                 // Get the title of the article
                 String title = properties.getString("title");
 
-                //
+                // Extract the source and store it as the publisher
+                String source = baseJsonResponse.getString("source");
 
                 // Set author to an empty string
                 String author = "";
+
+                // Create a variable to store the source and author info
+                // so they can be displayed together
+                String publisher = "";
 
                 // Check for an author, if they are listed, extract info
                 if (properties.has("author")) {
                     JSONArray authorArray = properties.getJSONArray("author");
                     for (int j = 0; j < authorArray.length(); j++) {
                         author = authorArray.optString(j);
+                        publisher = author + "for " + source;
                     }
                 }
 
+                String imageUrl = properties.getString("urlToImage");
+
+                // Extract the date on which the article was published
+                String date = properties.getString("publishedAt");
+
                 // Add the data to the Article object
-                Article article = new Article()
+                Article article = new Article(imageUrl, title, publisher, date);
+                articleList.add(article);
             }
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "Trouble parsing JSON");
         }
+
+        return articleList;
     }
 }
