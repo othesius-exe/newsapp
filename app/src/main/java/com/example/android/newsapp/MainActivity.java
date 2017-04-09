@@ -24,9 +24,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Article>> {
 
-    private String NEWS_QUERY_URL = "http://content.guardianapis.com/search?";
+    private String NEWS_QUERY_URL = "https://content.guardianapis.com/search?";
 
-    private String NEWS_API_KEY = "&api-key=1808a9c1-1b7b-4fd7-b096-d46102ab8e91";
+    private String NEWS_API_KEY = "&pi-key=1808a9c1-1b7b-4fd7-b096-d46102ab8e91";
 
     public static final String LOG_TAG = MainActivity.class.getName();
 
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         mProgressBar.setVisibility(View.GONE);
 
         // Set the Full url to to be a generic query so information loads on opening the application
-        mFullUrl = NEWS_QUERY_URL + NEWS_API_KEY;
+        mFullUrl = "https://content.guardianapis.com/search?api-key=1808a9c1-1b7b-4fd7-b096-d46102ab8e91";
 
         // Set the adapter to the ListView
         ListView articleListView = (ListView) findViewById(R.id.article_list);
