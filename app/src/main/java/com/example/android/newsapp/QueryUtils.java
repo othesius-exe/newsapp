@@ -126,6 +126,10 @@ public class QueryUtils {
      * and build an Article Object with it
      */
     public static List<Article> extractArticleFromJson(String articleJSON) {
+        String title = "";
+        String category = "";
+        String date = "";
+        String url = "";
 
         // Tests the Article JSON for an empty string
         if (TextUtils.isEmpty(articleJSON)) {
@@ -146,6 +150,7 @@ public class QueryUtils {
 
             // Check for results in the ArticleArray
             for (int i = 0; i < articleArray.length(); i ++) {
+
                 // Get article at the current index
                 // Create a JSON object from it
                 JSONObject thisArticle = articleArray.getJSONObject(i);
@@ -154,18 +159,26 @@ public class QueryUtils {
                 JSONObject properties = thisArticle.getJSONObject("results");
 
                 // Get the title of the article
-                String title = properties.getString("webTitle");
+                if (properties.has("webTitle")) {
+                    title = properties.getString("webTitle");
+                }
 
                 // Extract the source and store it as the publisher
-                String category = properties.getString("sectionName");
+                if (properties.has("sectionName")) {
+                    category = properties.getString("sectionName");
+                }
 
                 // Extract the date on which the article was published
-                String date = properties.getString("webPublicationDate");
+                if (properties.has("webPublicationDate")) {
+                    date = properties.getString("webPublicationDate");
+                }
 
-                String webUrl = properties.getString("webUrl");
+                if (properties.has("webUrl")) {
+                    url = properties.getString("webUrl");
+                }
 
                 // Add the data to the Article object
-                Article article = new Article(title, category, date, webUrl);
+                Article article = new Article(title, category, date, url);
                 articleList.add(article);
             }
         } catch (JSONException e) {
