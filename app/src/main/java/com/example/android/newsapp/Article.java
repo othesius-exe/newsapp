@@ -10,37 +10,37 @@ import android.os.Parcelable;
 public class Article implements Parcelable {
 
     // Class Variables
-    private String mImageUrl;
-
     private String mTitle;
 
-    private String mPublisher;
+    private String mCategory;
 
     private String mDate;
 
+    private String mUrl;
+
     // Class constructor
-    public Article(String imageUrl, String title, String publisher, String date) {
-        mImageUrl = imageUrl;
+    public Article(String title, String category, String date, String url) {
         mTitle = title;
-        mPublisher = publisher;
+        mCategory = category;
         mDate = date;
+        mUrl = url;
     }
 
     // Class getter methods for individual attributes
-    public String getImageUrl() {
-        return mImageUrl;
-    }
-
     public String getTitle() {
         return mTitle;
     }
 
-    public String getPublisher() {
-        return mPublisher;
+    public String getCategory() {
+        return mCategory;
     }
 
     public String getDate() {
         return mDate;
+    }
+
+    public String getUrl() {
+        return mUrl;
     }
 
     // Formatted string that returns the title, date and publisher
@@ -48,14 +48,14 @@ public class Article implements Parcelable {
     public String toString() {
         return "Title: " + mTitle +
                 "Published on: " + mDate +
-                "For: " + mPublisher;
+                "For: " + mCategory;
     }
 
     protected Article(Parcel in) {
-        mImageUrl = in.readString();
         mTitle = in.readString();
-        mPublisher = in.readString();
+        mCategory = in.readString();
         mDate = in.readString();
+        mUrl = in.readString();
     }
 
     @Override
@@ -65,10 +65,10 @@ public class Article implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mImageUrl);
         dest.writeString(mTitle);
-        dest.writeString(mPublisher);
+        dest.writeString(mCategory);
         dest.writeString(mDate);
+        dest.writeString(mUrl);
     }
 
     @SuppressWarnings("unused")

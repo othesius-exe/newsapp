@@ -36,7 +36,7 @@
             style="@style/article_item_style"
             android:layout_width="match_parent"
             android:layout_height="@dimen/article_info_height"
-            tools:text="@string/publisher_tool" />
+            tools:text="@string/category_tool" />
 
         <TextView
             android:id="@+id/publish_date"

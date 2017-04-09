@@ -24,9 +24,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Article>> {
 
-    private String NEWS_QUERY_URL = "https://newsapi.org/v1/articles?source=";
+    private String NEWS_QUERY_URL = "http://content.guardianapis.com/search";
 
-    private String NEWS_API_KEY = "d2436b21794e4407a28d2fe761a91e9c";
+    private String NEWS_API_KEY = "1808a9c1-1b7b-4fd7-b096-d46102ab8e91";
 
     public static final String LOG_TAG = MainActivity.class.getName();
 
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity
     public Loader<List<Article>> onCreateLoader(int i, Bundle bundle) {
         Log.i(LOG_TAG, "Creating loader");
         mProgressBar.setVisibility(View.VISIBLE);
-        return new ArticleLoader(this, NEWS_QUERY_URL + NEWS_API_KEY);
+        return new ArticleLoader(this, NEWS_QUERY_URL + mSearchFilter + NEWS_API_KEY);
     }
 
     // When the load completes, set the data in the adapter

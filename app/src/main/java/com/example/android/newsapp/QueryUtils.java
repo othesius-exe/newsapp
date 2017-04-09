@@ -142,7 +142,8 @@ public class QueryUtils {
             JSONObject baseJsonResponse = new JSONObject(articleJSON);
 
             // Create a JSONArray from the response
-            JSONArray articleArray = baseJsonResponse.getJSONArray("source");
+            JSONArray articleArray = baseJsonResponse.getJSONArray("results");
+
             // Check for results in the ArticleArray
             for (int i = 0; i < articleArray.length(); i ++) {
                 // Get article at the current index
@@ -150,36 +151,21 @@ public class QueryUtils {
                 JSONObject thisArticle = articleArray.getJSONObject(i);
 
                 // Extract the article info
-                JSONObject properties = thisArticle.getJSONObject("articles");
+                JSONObject properties = thisArticle.getJSONObject("results");
+
                 // Get the title of the article
-                String title = properties.getString("title");
+                String title = properties.getString("webTitle");
 
                 // Extract the source and store it as the publisher
-                String source = baseJsonResponse.getString("source");
-
-                // Set author to an empty string
-                String author = "";
-
-                // Create a variable to store the source and author info
-                // so they can be displayed together
-                String publisher = "";
-
-                // Check for an author, if they are listed, extract info
-                if (properties.has("author")) {
-                    JSONArray authorArray = properties.getJSONArray("author");
-                    for (int j = 0; j < authorArray.length(); j++) {
-                        author = authorArray.optString(j);
-                        publisher = author + "for " + source;
-                    }
-                }
-
-                String imageUrl = properties.getString("urlToImage");
+                String category = properties.getString("sectionName");
 
                 // Extract the date on which the article was published
-                String date = properties.getString("publishedAt");
+                String date = properties.getString("webPublicationDate");
+
+                String webUrl = properties.getString("webUrl");
 
                 // Add the data to the Article object
-                Article article = new Article(imageUrl, title, publisher, date);
+                Article article = new Article(title, category, date, webUrl);
                 articleList.add(article);
             }
         } catch (JSONException e) {

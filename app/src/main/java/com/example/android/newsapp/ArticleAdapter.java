@@ -10,8 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 
 /**
@@ -45,10 +43,10 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         ImageView articleImage = (ImageView) convertView.findViewById(R.id.article_image);
 
         // Call the class getter methods to set the relevant information on each view
-        publisherView.setText(thisArticle.getPublisher());
+        publisherView.setText(thisArticle.getCategory());
         dateView.setText(thisArticle.getDate());
         titleView.setText(thisArticle.getTitle());
-        Picasso.with(this.getContext()).load(thisArticle.getImageUrl()).into(articleImage);
+        //Picasso.with(this.getContext()).load(thisArticle.getImageUrl()).into(articleImage);
         return convertView;
     }
 
