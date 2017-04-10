@@ -46,7 +46,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         publisherView.setText(thisArticle.getCategory());
         dateView.setText(thisArticle.getDate());
         titleView.setText(thisArticle.getTitle());
-        //Picasso.with(this.getContext()).load(thisArticle.getImageUrl()).into(articleImage);
+        articleImage.setImageBitmap(thisArticle.getThumbnail());
         return convertView;
     }
 

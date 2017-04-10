@@ -1,5 +1,7 @@
 package com.example.android.newsapp;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -38,6 +40,7 @@ public class QueryUtils {
         try {
             jsonResponse = makeHttpRequest(url);
         } catch (IOException e){
+            e.printStackTrace();
             Log.e(LOG_TAG, "error closing input stream", e);
         }
 
@@ -56,6 +59,7 @@ public class QueryUtils {
         try {
             url = new URL(stringUrl);
         } catch (MalformedURLException e){
+            e.printStackTrace();
             Log.e(LOG_TAG, "Error creating URL", e);
         }
         return url;
@@ -147,7 +151,8 @@ public class QueryUtils {
             JSONObject baseJsonResponse = new JSONObject(articleJSON);
 
             // Create a JSONArray from the response
-            JSONArray articleArray = baseJsonResponse.getJSONArray("response");
+            JSONObject articleObject = baseJsonResponse.getJSONObject("response");
+            JSONArray articleArray = articleObject.getJSONArray("results");
 
             // Check for results in the ArticleArray
             for (int i = 0; i < articleArray.length(); i ++) {
@@ -156,30 +161,39 @@ public class QueryUtils {
                 // Create a JSON object from it
                 JSONObject thisArticle = articleArray.getJSONObject(i);
 
-                // Extract the article info
-                JSONObject properties = thisArticle.getJSONObject("results");
 
                 // Get the title of the article
-                if (properties.has("webTitle")) {
-                    title = properties.getString("webTitle");
+                if (thisArticle.has("webTitle")) {
+                    title = thisArticle.getString("webTitle");
                 }
 
                 // Extract the source and store it as the publisher
-                if (properties.has("sectionName")) {
-                    category = properties.getString("sectionName");
+                if (thisArticle.has("sectionName")) {
+                    category = thisArticle.getString("sectionName");
                 }
 
                 // Extract the date on which the article was published
-                if (properties.has("webPublicationDate")) {
-                    date = properties.getString("webPublicationDate");
+                if (thisArticle.has("webPublicationDate")) {
+                    date = thisArticle.getString("webPublicationDate");
                 }
 
-                if (properties.has("webUrl")) {
-                    url = properties.getString("webUrl");
+                if (thisArticle.has("webUrl")) {
+                    url = thisArticle.getString("webUrl");
+                }
+
+                JSONObject fields = new JSONObject();
+                if (thisArticle.has("fields")) {
+                    fields = thisArticle.getJSONObject("fields");
+                }
+
+                Bitmap thumbnail = null;
+                if (fields.has("thumbnail")) {
+                    String thumbnailLink = fields.getString("thumbnail");
+                    thumbnail = getBitmapFromURL(thumbnailLink);
                 }
 
                 // Add the data to the Article object
-                Article article = new Article(title, category, date, url);
+                Article article = new Article(title, category, date, thumbnail, url);
                 articleList.add(article);
             }
         } catch (JSONException e) {
@@ -188,5 +202,21 @@ public class QueryUtils {
         }
 
         return articleList;
+    }
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream inputStream = connection.getInputStream();
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            return bitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(LOG_TAG, "Trouble retrieving image ");
+            return null;
+        }
     }
 }

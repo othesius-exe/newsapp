@@ -1,5 +1,6 @@
 package com.example.android.newsapp;
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -18,12 +19,15 @@ public class Article implements Parcelable {
 
     private String mUrl;
 
+    private Bitmap mThumbnail;
+
     // Class constructor
-    public Article(String title, String category, String date, String url) {
+    public Article(String title, String category, String date, Bitmap thumbnail, String url) {
         mTitle = title;
         mCategory = category;
         mDate = date;
         mUrl = url;
+        mThumbnail = thumbnail;
     }
 
     // Class getter methods for individual attributes
@@ -43,6 +47,10 @@ public class Article implements Parcelable {
         return mUrl;
     }
 
+    public Bitmap getThumbnail() {
+        return mThumbnail;
+    }
+
     // Formatted string that returns the title, date and publisher
     @Override
     public String toString() {
@@ -56,6 +64,7 @@ public class Article implements Parcelable {
         mCategory = in.readString();
         mDate = in.readString();
         mUrl = in.readString();
+        mThumbnail = (Bitmap) in.readValue(Bitmap.class.getClassLoader());
     }
 
     @Override
@@ -69,6 +78,7 @@ public class Article implements Parcelable {
         dest.writeString(mCategory);
         dest.writeString(mDate);
         dest.writeString(mUrl);
+        dest.writeValue(mThumbnail);
     }
 
     @SuppressWarnings("unused")
