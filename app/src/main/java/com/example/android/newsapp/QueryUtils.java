@@ -78,7 +78,7 @@ public class QueryUtils {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(10000);
             urlConnection.setConnectTimeout(15000);
-            urlConnection.setRequestMethod("Get");
+            urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
             // If the connection was successful, (response code 200)
@@ -91,6 +91,7 @@ public class QueryUtils {
                 Log.e(LOG_TAG, "Error Response Code" + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
+            e.printStackTrace();
             Log.e(LOG_TAG, "Problem retrieving json object " + url);
         } finally {
             if (urlConnection != null) {
@@ -146,7 +147,7 @@ public class QueryUtils {
             JSONObject baseJsonResponse = new JSONObject(articleJSON);
 
             // Create a JSONArray from the response
-            JSONArray articleArray = baseJsonResponse.getJSONArray("results");
+            JSONArray articleArray = baseJsonResponse.getJSONArray("response");
 
             // Check for results in the ArticleArray
             for (int i = 0; i < articleArray.length(); i ++) {
@@ -182,6 +183,7 @@ public class QueryUtils {
                 articleList.add(article);
             }
         } catch (JSONException e) {
+            e.printStackTrace();
             Log.e(LOG_TAG, "Trouble parsing JSON");
         }
 

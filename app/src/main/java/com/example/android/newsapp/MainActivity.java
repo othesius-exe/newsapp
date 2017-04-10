@@ -2,9 +2,11 @@ package com.example.android.newsapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -24,9 +26,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Article>> {
 
-    private String NEWS_QUERY_URL = "https://content.guardianapis.com/search?";
+    private String NEWS_QUERY_URL = "https://content.guardianapis.com/search?q=";
 
-    private String NEWS_API_KEY = "&pi-key=1808a9c1-1b7b-4fd7-b096-d46102ab8e91";
+    private String NEWS_API_KEY = "&api-key=1808a9c1-1b7b-4fd7-b096-d46102ab8e91";
 
     public static final String LOG_TAG = MainActivity.class.getName();
 
@@ -98,11 +100,12 @@ public class MainActivity extends AppCompatActivity
                 // Replace spaces with "+"
                 // Create a new url to query the api
                 mUserQuery = editText.getText().toString();
-                mSearchFilter = mUserQuery.replace(" ", "%20").replace("and", "AND").replace("or", "OR").replace("not", "NOT");
+                mSearchFilter = mUserQuery.replace(" ", "%20");
                 mFullUrl = NEWS_QUERY_URL + mUserQuery + NEWS_API_KEY;
 
                 // Restart the loader on click
                 mLoaderManager.restartLoader(ARTICLE_LOADER_ID, null, MainActivity.this);
+                Log.v(LOG_TAG, "Url on click " + mFullUrl);
             }
         });
         Log.e(LOG_TAG, "Url being sent " + mFullUrl);
@@ -131,8 +134,19 @@ public class MainActivity extends AppCompatActivity
     // send the modified url to the loader class
     @Override
     public Loader<List<Article>> onCreateLoader(int i, Bundle bundle) {
+
+        // Create a preference manager
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+
+
+        // Write to the log when the loader is created
         Log.i(LOG_TAG, "Creating loader");
+
+        // Show the progress bar while loader is running
         mProgressBar.setVisibility(View.VISIBLE);
+
+        // Return an article loader with a url to query
         return new ArticleLoader(this, mFullUrl);
     }
 
@@ -140,13 +154,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<List<Article>> loader, List<Article> data) {
         Log.i(LOG_TAG, "Load finished");
+
+        // Clear out old information
         mArticleAdapter.clear();
+
+        // Hide the progress bar
         mProgressBar.setVisibility(View.GONE);
+
+        // If there was data found, add it to the Adapter
         if (data != null && !data.isEmpty()) {
             mArticleAdapter.addAll(data);
         }
     }
 
+    // Reset the loader when called, and do it all again
     @Override
     public void onLoaderReset(Loader<List<Article>> loader) {
         Log.i(LOG_TAG, "Reset the loader");
@@ -154,6 +175,7 @@ public class MainActivity extends AppCompatActivity
         mLoaderManager.restartLoader(ARTICLE_LOADER_ID, null, this);
     }
 
+    // Save the current state of the application for restarts
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putString(mUserQuery, mUserQuery);
@@ -161,6 +183,8 @@ public class MainActivity extends AppCompatActivity
         super.onSaveInstanceState(savedInstanceState);
     }
 
+    // Restore the state of the application from previously destroyed state
+    // on rotation of the application
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);

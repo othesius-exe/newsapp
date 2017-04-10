@@ -5,7 +5,7 @@
     android:title="@string/settings_title">
 
     <EditTextPreference
-        android:inputType="numberDecimal"
+        android:inputType="text"
         android:key="@string/category_default"
         android:selectAllOnFocus="true"
         android:title="@string/category" />

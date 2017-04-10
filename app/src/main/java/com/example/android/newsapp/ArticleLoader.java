@@ -17,6 +17,7 @@ public class ArticleLoader extends android.support.v4.content.AsyncTaskLoader<Li
 
     public ArticleLoader(Context context, String url) {
         super(context);
+        Log.v(LOG_TAG, "Url in Loader " + url);
         mUrl = url;
     }
 
