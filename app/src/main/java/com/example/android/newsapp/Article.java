@@ -1,6 +1,5 @@
 package com.example.android.newsapp;
 
-import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -19,10 +18,10 @@ public class Article implements Parcelable {
 
     private String mUrl;
 
-    private Bitmap mThumbnail;
+    private String mThumbnail;
 
     // Class constructor
-    public Article(String title, String category, String date, Bitmap thumbnail, String url) {
+    public Article(String title, String category, String date, String thumbnail, String url) {
         mTitle = title;
         mCategory = category;
         mDate = date;
@@ -47,7 +46,7 @@ public class Article implements Parcelable {
         return mUrl;
     }
 
-    public Bitmap getThumbnail() {
+    public String getThumbnail() {
         return mThumbnail;
     }
 
@@ -64,7 +63,7 @@ public class Article implements Parcelable {
         mCategory = in.readString();
         mDate = in.readString();
         mUrl = in.readString();
-        mThumbnail = (Bitmap) in.readValue(Bitmap.class.getClassLoader());
+        mThumbnail = in.readString();
     }
 
     @Override
@@ -78,7 +77,7 @@ public class Article implements Parcelable {
         dest.writeString(mCategory);
         dest.writeString(mDate);
         dest.writeString(mUrl);
-        dest.writeValue(mThumbnail);
+        dest.writeString(mThumbnail);
     }
 
     @SuppressWarnings("unused")

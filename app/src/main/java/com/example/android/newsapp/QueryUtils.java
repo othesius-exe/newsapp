@@ -181,19 +181,19 @@ public class QueryUtils {
                     url = thisArticle.getString("webUrl");
                 }
 
-                JSONObject fields = new JSONObject();
-                if (thisArticle.has("fields")) {
-                    fields = thisArticle.getJSONObject("fields");
-                }
+                String imageThumbnailUrl = "";
+                for (int j = 0; j < articleArray.length(); j ++) {
+                    JSONObject articleFields = articleArray.getJSONObject(8);
 
-                Bitmap thumbnail = null;
-                if (fields.has("thumbnail")) {
-                    String thumbnailLink = fields.getString("thumbnail");
-                    thumbnail = getBitmapFromURL(thumbnailLink);
-                }
 
+                    if (articleFields.has("fields")) {
+                        JSONObject fields = thisArticle.getJSONObject("fields");
+                        imageThumbnailUrl = fields.getString("thumbnail");
+                    }
+
+                }
                 // Add the data to the Article object
-                Article article = new Article(title, category, date, thumbnail, url);
+                Article article = new Article(title, category, date, imageThumbnailUrl, url);
                 articleList.add(article);
             }
         } catch (JSONException e) {

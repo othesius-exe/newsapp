@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
         mProgressBar.setVisibility(View.GONE);
 
         // Set the Full url to to be a generic query so information loads on opening the application
-        mFullUrl = "https://content.guardianapis.com/search?api-key=1808a9c1-1b7b-4fd7-b096-d46102ab8e91";
+        mFullUrl = "https://content.guardianapis.com/search?show-fields=thumbnail&api-key=1808a9c1-1b7b-4fd7-b096-d46102ab8e91";
 
         // Set the adapter to the ListView
         ListView articleListView = (ListView) findViewById(R.id.article_list);
