@@ -26,7 +26,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Article>> {
 
-    private String NEWS_QUERY_URL = "https://content.guardianapis.com/search?q=";
+    private String NEWS_QUERY_URL = "https://content.guardianapis.com/search?show-fields=thumbnail&q=";
 
     private String NEWS_API_KEY = "&api-key=1808a9c1-1b7b-4fd7-b096-d46102ab8e91";
 
