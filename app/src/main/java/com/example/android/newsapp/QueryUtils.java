@@ -1,7 +1,5 @@
 package com.example.android.newsapp;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -135,6 +133,7 @@ public class QueryUtils {
         String category = "";
         String date = "";
         String url = "";
+        String dateTime;
 
         // Tests the Article JSON for an empty string
         if (TextUtils.isEmpty(articleJSON)) {
@@ -174,7 +173,8 @@ public class QueryUtils {
 
                 // Extract the date on which the article was published
                 if (thisArticle.has("webPublicationDate")) {
-                    date = thisArticle.getString("webPublicationDate");
+                    dateTime = thisArticle.getString("webPublicationDate");
+                    date = dateTime.substring(0, 9);
                 }
 
                 if (thisArticle.has("webUrl")) {
@@ -185,12 +185,11 @@ public class QueryUtils {
                 for (int j = 0; j < articleArray.length(); j ++) {
                     JSONObject articleFields = articleArray.getJSONObject(8);
 
-
-                    if (articleFields.has("fields")) {
+                    // Check for fields and extract the thumbnail url
+                    if (articleFields != null && articleFields.has("fields")) {
                         JSONObject fields = thisArticle.getJSONObject("fields");
                         imageThumbnailUrl = fields.getString("thumbnail");
                     }
-
                 }
                 // Add the data to the Article object
                 Article article = new Article(title, category, date, imageThumbnailUrl, url);
@@ -200,23 +199,6 @@ public class QueryUtils {
             e.printStackTrace();
             Log.e(LOG_TAG, "Trouble parsing JSON");
         }
-
         return articleList;
-    }
-
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream inputStream = connection.getInputStream();
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-            return bitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e(LOG_TAG, "Trouble retrieving image ");
-            return null;
-        }
     }
 }

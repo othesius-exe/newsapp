@@ -13,6 +13,8 @@
         <ImageView
             android:id="@+id/article_image"
             android:src="@drawable/destiny_two"
+            android:paddingLeft="@dimen/text_view_vertical_padding"
+            android:paddingRight="@dimen/text_view_vertical_padding"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"/>

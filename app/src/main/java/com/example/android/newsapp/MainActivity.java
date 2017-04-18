@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity
 
     private ArrayList<Article> mArticleList;
 
+    private ListView mArticleListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,13 +70,13 @@ public class MainActivity extends AppCompatActivity
         mFullUrl = "https://content.guardianapis.com/search?show-fields=thumbnail&api-key=1808a9c1-1b7b-4fd7-b096-d46102ab8e91";
 
         // Set the adapter to the ListView
-        ListView articleListView = (ListView) findViewById(R.id.article_list);
+        mArticleListView = (ListView) findViewById(R.id.article_list);
         mArticleAdapter = new ArticleAdapter(this, new ArrayList<Article>());
-        articleListView.setAdapter(mArticleAdapter);
+        mArticleListView.setAdapter(mArticleAdapter);
 
         // Set an empty view on the list on startup
         mEmptyView = (TextView) findViewById(R.id.empty_view);
-        articleListView.setEmptyView(mEmptyView);
+        mArticleListView.setEmptyView(mEmptyView);
         mEmptyView.setText(R.string.search);
 
         // Instantiate the loader
@@ -109,6 +113,26 @@ public class MainActivity extends AppCompatActivity
             }
         });
         Log.e(LOG_TAG, "Url being sent " + mFullUrl);
+
+
+        // Set onItemClickListener to the ListView
+        // Set intent to open article in browser
+        mArticleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the Article from its position in the list
+                Article currentArticle = mArticleAdapter.getItem(position);
+
+                // Declare the URI
+                Uri articleUri = Uri.parse(currentArticle.getUrl());
+
+                // Declare the intent (browser intent)
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, articleUri);
+
+                // Start the intent
+                startActivity(browserIntent);
+            }
+        });
     }
 
     // Inflate the view for the option menu
@@ -137,8 +161,6 @@ public class MainActivity extends AppCompatActivity
 
         // Create a preference manager
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-
 
         // Write to the log when the loader is created
         Log.i(LOG_TAG, "Creating loader");

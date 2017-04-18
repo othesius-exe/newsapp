@@ -20,6 +20,8 @@ import java.util.ArrayList;
 
 public class ArticleAdapter extends ArrayAdapter<Article> {
 
+    private static final String LOG_TAG = ArticleLoader.class.getName();
+
     // Constructor for Article Adapter.
     public ArticleAdapter(Activity context, ArrayList<Article> articles) {
         super(context, 0, articles);
@@ -48,7 +50,13 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         publisherView.setText(thisArticle.getCategory());
         dateView.setText(thisArticle.getDate());
         titleView.setText(thisArticle.getTitle());
-        Picasso.with(getContext()).load(thisArticle.getThumbnail()).into(articleImage);
+        titleView.setSelected(true);
+
+        if (thisArticle.getThumbnail() != null && !thisArticle.getThumbnail().isEmpty()) {
+            Picasso.with(getContext()).load(thisArticle.getThumbnail()).into(articleImage);
+        } else {
+            articleImage.setImageResource(R.drawable.broken_link);
+        }
         return convertView;
     }
 
